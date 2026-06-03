@@ -2,12 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 import joblib
 import pandas as pd
 
-#inizializzazione flask
 app = Flask(__name__)
 
 path = "restful/modello_mutuo.joblib"
 try:
-    # caricamento 
     model = joblib.load(path)
 except FileNotFoundError:
     print(f"Error: file {path}'not found.")
@@ -42,10 +40,8 @@ def predict():
             print(f"Error: Invalid data format: {v}")
             return render_template('index.html')
         try:
-            #dataframe con la struttura usata nel training
             df = pd.DataFrame([dataclient])
             
-            # esecuzione della predizione.
             result = model.predict(df)[0]
             
             if result == 1:
@@ -65,7 +61,6 @@ def success():
 def fail():
     return render_template('fail.html')
     
-# avvio del server web Flask
 if __name__ == '__main__':
     app.run(debug=True)
     
