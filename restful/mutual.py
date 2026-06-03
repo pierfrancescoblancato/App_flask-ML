@@ -2,12 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for
 import joblib
 import pandas as pd
 
-# Inizializzazione dell'applicazione Flask
+#inizializzazione flask
 app = Flask(__name__)
 
 path = "restful/modello_mutuo.joblib"
 try:
-    # Caricamento del modello Machine Learning salvato in precedenza
+    # caricamento 
     model = joblib.load(path)
 except FileNotFoundError:
     print(f"Error: file {path}'not found.")
@@ -42,10 +42,10 @@ def predict():
             print(f"Error: Invalid data format: {v}")
             return render_template('index.html')
         try:
-            # Il modello Scikit-Learn si aspetta un DataFrame di Pandas con la stessa struttura usata nel training
+            #dataframe con la struttura usata nel training
             df = pd.DataFrame([dataclient])
             
-            # Esecuzione della predizione. .predict() restituisce un array, prendiamo il primo elemento [0]
+            # esecuzione della predizione.
             result = model.predict(df)[0]
             
             if result == 1:
@@ -54,7 +54,6 @@ def predict():
                 return redirect(url_for('fail'))
             
         except Exception as e:
-            # Cattura errori generici
             print(f"Error: {e}")
             return render_template('index.html')
 
@@ -66,7 +65,7 @@ def success():
 def fail():
     return render_template('fail.html')
     
-# Avvio del server web Flask in modalità debug (utile in fase di sviluppo)
+# avvio del server web Flask
 if __name__ == '__main__':
     app.run(debug=True)
     
